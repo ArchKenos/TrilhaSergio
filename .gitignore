@@ -1,0 +1,14 @@
+# Compilação e binários Java
+bin/
+*.class
+
+# IDEs e editores
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+
+# Logs e temporários
+*.log
