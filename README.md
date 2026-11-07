@@ -11,6 +11,7 @@ O projeto está organizado em camadas bem definidas para separação de responsa
 ```
 src/
 ├── Main.java                      # Ponto de entrada da aplicação
+├── TesteSistema.java              # Suite de testes automatizados das regras de negócio
 ├── model/                         # Camada de Dados e Regras de Negócio
 │   ├── CategoriaEvento.java       # Enumeração com as categorias delimitadas de eventos
 │   ├── Evento.java                # Entidade do Evento com atributos obrigatórios e lógica temporal
@@ -20,6 +21,9 @@ src/
 │   └── ConsoleView.java           # Menus, leitura com Scanner, formatação e tratamento de exceções
 └── controller/                    # Camada Controladora
     └── EventoController.java      # Orquestrador entre View e Model
+docs/
+├── REQUISITOS.md                  # Especificação formal de requisitos funcionais e não funcionais
+└── DIAGRAMA_CLASSES.md            # Diagrama de Classes UML completo em formato Mermaid
 ```
 
 ---
@@ -41,6 +45,9 @@ src/
   * Alertas dinâmicos no console identificando eventos que estão ocorrendo no momento ou com início programado para as próximas 48 horas.
 * **Armazenamento em Memória:** Utilização de `ArrayList` dinâmico para controle de dados em tempo de execução, com dados iniciais para demonstração imediata.
 
+Para a documentação completa dos requisitos funcionais e não funcionais, consulte [docs/REQUISITOS.md](docs/REQUISITOS.md).  
+Para visualizar o diagrama de classes UML estrutural, consulte [docs/DIAGRAMA_CLASSES.md](docs/DIAGRAMA_CLASSES.md).
+
 ---
 
 ## 3. Pré-requisitos
@@ -57,28 +64,29 @@ java -version
 
 ## 4. Compilação e Execução
 
-### Opção 1: Linha de Comando (Terminal / PowerShell)
-
-1. Clone o repositório ou navegue até a pasta raiz do projeto:
-```bash
-cd C:\TrilhaSergio
+### Opção 1: Execução Rápida (Windows)
+Basta dar um duplo clique no arquivo `executar.bat` ou executá-lo no terminal:
+```cmd
+executar.bat
 ```
 
-2. Compile os arquivos para o diretório `bin/`:
+### Opção 2: Linha de Comando Manual
+
+1. Compile todos os arquivos para a pasta `bin/`:
 ```bash
 javac -d bin -sourcepath src src/model/*.java src/view/*.java src/controller/*.java src/Main.java
 ```
 
-3. Execute a aplicação:
+2. Execute o sistema:
 ```bash
 java -cp bin Main
 ```
 
-### Opção 2: Visual Studio Code ou Eclipse / IntelliJ
-
-1. Abra a pasta `C:\TrilhaSergio` na sua IDE.
-2. Certifique-se de que a pasta `src` esteja configurada como *Source Directory*.
-3. Execute diretamente o arquivo `src/Main.java`.
+3. (Opcional) Execute a bateria de testes automatizados:
+```bash
+javac -d bin -sourcepath src src/TesteSistema.java
+java -cp bin TesteSistema
+```
 
 ---
 
@@ -97,3 +105,4 @@ java -cp bin Main
  0. Sair
 ==================================================
 ```
+
