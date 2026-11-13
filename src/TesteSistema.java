@@ -21,6 +21,7 @@ public class TesteSistema {
 
         testarCadastroUsuario();
         testarCadastroEvento();
+        testarEventoNoPassado();
         testarFiltroPorCategoria();
         testarNotificacoesTemporalidade();
         testarParserHorario();
@@ -64,6 +65,29 @@ public class TesteSistema {
                 novo.getNome().contains("Feira do Livro") &&
                 novo.getCategoria() == CategoriaEvento.FESTIVAL &&
                 novo.getEndereco().contains("Praça da Alfândega"));
+    }
+
+    private static void testarEventoNoPassado() {
+        SistemaEventos sistema = new SistemaEventos();
+        int totalInicial = sistema.getEventos().size();
+
+        Evento passado = new Evento(
+                "Evento de ontem",
+                "Rua da Praia",
+                CategoriaEvento.SHOW,
+                LocalDateTime.now().minusDays(1),
+                "Já aconteceu."
+        );
+
+        boolean rejeitou = false;
+        try {
+            sistema.cadastrarEvento(passado);
+        } catch (IllegalArgumentException e) {
+            rejeitou = true;
+        }
+
+        afirmar("Evento no passado é rejeitado", rejeitou);
+        afirmar("Evento no passado não entra na lista", sistema.getEventos().size() == totalInicial);
     }
 
     private static void testarFiltroPorCategoria() {

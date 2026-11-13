@@ -70,8 +70,13 @@ public class EventoController {
 
     private void cadastrarEvento() {
         Evento evento = view.formularioNovoEvento();
-        model.cadastrarEvento(evento);
-        view.exibirMensagem("\n✅ Evento em Porto Alegre cadastrado com sucesso!");
+        try {
+            model.cadastrarEvento(evento);
+            view.exibirMensagem("\n✅ Evento em Porto Alegre cadastrado com sucesso!");
+        } catch (IllegalArgumentException e) {
+            // O horário pode ter passado enquanto o usuário preenchia o formulário.
+            view.exibirMensagem("\n⚠️ Evento não cadastrado: " + e.getMessage());
+        }
         view.aguardarEnter();
     }
 

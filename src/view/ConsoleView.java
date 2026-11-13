@@ -96,6 +96,10 @@ public class ConsoleView {
             String textoDataHora = scanner.nextLine().trim();
             try {
                 dataHora = Evento.parseHorario(textoDataHora);
+                if (dataHora.isBefore(LocalDateTime.now())) {
+                    System.out.println("⚠️ Essa data/hora já passou! Informe um horário futuro.");
+                    dataHora = null;
+                }
             } catch (DateTimeParseException e) {
                 System.out.println("⚠️ Formato incorreto ou data inválida! Utilize o padrão dd/MM/yyyy HH:mm.");
             }
