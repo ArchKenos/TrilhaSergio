@@ -35,9 +35,13 @@ public class SistemaEventos {
      * Cadastra um novo evento na lista.
      *
      * @param evento Instância preenchida do evento.
+     * @throws IllegalArgumentException se o horário do evento já passou.
      */
     public void cadastrarEvento(Evento evento) {
         if (evento != null) {
+            if (evento.getHorario().isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("Não é possível cadastrar um evento com data/hora no passado.");
+            }
             eventos.add(evento);
             // Ordena os eventos cronologicamente
             eventos.sort(Comparator.comparing(Evento::getHorario));
