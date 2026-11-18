@@ -39,7 +39,7 @@ public class SistemaEventos {
      */
     public void cadastrarEvento(Evento evento) {
         if (evento != null) {
-            if (evento.getHorario().isBefore(LocalDateTime.now())) {
+            if (evento.getHorario() == null || evento.getHorario().isBefore(LocalDateTime.now())) {
                 throw new IllegalArgumentException("Não é possível cadastrar um evento com data/hora no passado.");
             }
             eventos.add(evento);

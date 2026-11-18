@@ -71,6 +71,7 @@ public class TesteSistema {
         SistemaEventos sistema = new SistemaEventos();
         int totalInicial = sistema.getEventos().size();
 
+        // 1. Teste com dia passado (ontem)
         Evento passado = new Evento(
                 "Evento de ontem",
                 "Rua da Praia",
@@ -79,15 +80,34 @@ public class TesteSistema {
                 "Já aconteceu."
         );
 
-        boolean rejeitou = false;
+        boolean rejeitouDiaPassado = false;
         try {
             sistema.cadastrarEvento(passado);
         } catch (IllegalArgumentException e) {
-            rejeitou = true;
+            rejeitouDiaPassado = true;
         }
 
-        afirmar("Evento no passado é rejeitado", rejeitou);
-        afirmar("Evento no passado não entra na lista", sistema.getEventos().size() == totalInicial);
+        afirmar("Evento no passado (dia anterior) é rejeitado", rejeitouDiaPassado);
+        afirmar("Evento no passado (dia anterior) não entra na lista", sistema.getEventos().size() == totalInicial);
+
+        // 2. Teste no mesmo dia com horário passado
+        Evento mesmoDiaPassado = new Evento(
+                "Evento mais cedo hoje",
+                "Usina do Gasômetro",
+                CategoriaEvento.FESTIVAL,
+                LocalDateTime.now().minusHours(2),
+                "Horário já passou hoje."
+        );
+
+        boolean rejeitouMesmoDia = false;
+        try {
+            sistema.cadastrarEvento(mesmoDiaPassado);
+        } catch (IllegalArgumentException e) {
+            rejeitouMesmoDia = true;
+        }
+
+        afirmar("Evento no mesmo dia com horário passado é rejeitado", rejeitouMesmoDia);
+        afirmar("Evento no mesmo dia com horário passado não entra na lista", sistema.getEventos().size() == totalInicial);
     }
 
     private static void testarFiltroPorCategoria() {
