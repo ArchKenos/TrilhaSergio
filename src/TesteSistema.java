@@ -21,6 +21,7 @@ public class TesteSistema {
 
         testarCadastroUsuario();
         testarCadastroEvento();
+        testarEventoNoPassado();
         testarFiltroPorCategoria();
         testarNotificacoesTemporalidade();
         testarParserHorario();
@@ -64,6 +65,49 @@ public class TesteSistema {
                 novo.getNome().contains("Feira do Livro") &&
                 novo.getCategoria() == CategoriaEvento.FESTIVAL &&
                 novo.getEndereco().contains("Praça da Alfândega"));
+    }
+
+    private static void testarEventoNoPassado() {
+        SistemaEventos sistema = new SistemaEventos();
+        int totalInicial = sistema.getEventos().size();
+
+        // 1. Teste com dia passado (ontem)
+        Evento passado = new Evento(
+                "Evento de ontem",
+                "Rua da Praia",
+                CategoriaEvento.SHOW,
+                LocalDateTime.now().minusDays(1),
+                "Já aconteceu."
+        );
+
+        boolean rejeitouDiaPassado = false;
+        try {
+            sistema.cadastrarEvento(passado);
+        } catch (IllegalArgumentException e) {
+            rejeitouDiaPassado = true;
+        }
+
+        afirmar("Evento no passado (dia anterior) é rejeitado", rejeitouDiaPassado);
+        afirmar("Evento no passado (dia anterior) não entra na lista", sistema.getEventos().size() == totalInicial);
+
+        // 2. Teste no mesmo dia com horário passado
+        Evento mesmoDiaPassado = new Evento(
+                "Evento mais cedo hoje",
+                "Usina do Gasômetro",
+                CategoriaEvento.FESTIVAL,
+                LocalDateTime.now().minusHours(2),
+                "Horário já passou hoje."
+        );
+
+        boolean rejeitouMesmoDia = false;
+        try {
+            sistema.cadastrarEvento(mesmoDiaPassado);
+        } catch (IllegalArgumentException e) {
+            rejeitouMesmoDia = true;
+        }
+
+        afirmar("Evento no mesmo dia com horário passado é rejeitado", rejeitouMesmoDia);
+        afirmar("Evento no mesmo dia com horário passado não entra na lista", sistema.getEventos().size() == totalInicial);
     }
 
     private static void testarFiltroPorCategoria() {
